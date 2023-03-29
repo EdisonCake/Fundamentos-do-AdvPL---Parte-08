@@ -181,6 +181,17 @@ Static Function ValInstru(oModel)
 
     if !ExistCPO("ZS3", cCod)
         lRet := .F.
+
+    elseif ZS3->(DbSeek(xFilial("ZS3")+cCod))
+
+        if ZS3->ZS3_QTDALU >= 5
+
+            lRet := .F.
+
+            Help(NIL, NIL, "Atenção!!", NIL, "Instrutor(a) já possui o máximo de alunos.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Aguarde o fim das aulas ou selecione outro(a) intrutor(a)."})
+
+        endif
+
     endif
 
 Return lRet

@@ -63,9 +63,9 @@ Static Function ViewDef()
     oView:AddGrid("VIEW_ZS3", oStruZS3, "ZS3DETAIL")
     oView:AddGrid("VIEW_ZS4", oStruZS4, "ZS4DETAIL")
 
-    oView:CreateHorizontalBox("CNH", 40)
+    oView:CreateHorizontalBox("CNH", 30)
     oView:CreateHorizontalBox("INSTRUTOR", 30)
-    oView:CreateHorizontalBox("ALUNO", 30)
+    oView:CreateHorizontalBox("ALUNO", 40)
 
     oView:SetOwnerView("VIEW_ZS1", "CNH")
     oView:EnableTitleView("VIEW_ZS1", "Categorias de CNH")
@@ -75,5 +75,10 @@ Static Function ViewDef()
 
     oView:SetOwnerView("VIEW_ZS4", "ALUNO")
     oView:EnableTitleView("VIEW_ZS4", "Aluno(s) do Instrutor")
+
+    // Removendo alguns campos da visualização
+    oStruZS3:RemoveField("ZS3_CATEGO")
+    oStruZS4:RemoveField("ZS4_NOMINS")
+    oStruZS4:RemoveField("ZS4_CODINS")
 
 Return oView
