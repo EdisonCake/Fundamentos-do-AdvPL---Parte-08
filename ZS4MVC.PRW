@@ -11,14 +11,15 @@
 User Function ZS4MVC()
     local cAlias    := 'ZS4'
     local cTitle    := 'Alunos da Auto-Escola'
-    local oMark   := FwMarkBrowse():New()
+    local cCampo    := 'ZS4_MARC'
+    local oMark     := FwMarkBrowse():New()
 
     private cIdInstrutor := ""
 
     oMark:SetAlias(cAlias)
     oMark:SetDescription(cTitle)
 
-    oMark:SetFieldMark('ZS4_MARC')
+    oMark:SetFieldMark(cCampo)
     oMark:AddButton("Excluir Marcados", "u_DelZS4", 5, 1)
     oMark:AddButton("Encerrar Aulas",   "u_FimZS4",,   1)
     
@@ -77,7 +78,7 @@ Static Function ViewDef()
     oView:SetOwnerView("VIEW_ZS4", "ALUNO")
     oView:EnableTitleView("VIEW_ZS4",  "Cadastro de Alunos")
 
-    oVIew:setAfterViewActivate({|oView| fillUnit(oView)})
+    oView:setAfterViewActivate({|oView| fillUnit(oView)})
 Return oView
 
 /*/{Protheus.doc} User Function DelZS4
@@ -88,26 +89,32 @@ Return oView
     @version 1.0
     /*/
 User Function DelZS4()
+    local nCount := 0
 
   If MsgYesNo("Confirma a exclusão?", "Tem certeza?")
     DbSelectArea("ZS4")
 
-      ZS4->(DbGoTop())
+    ZS4->(DbGoTop())
 
-      While !ZS4->(EoF())
-          if oMark:IsMark() .and. ((ZS4->ZS4_AULA) <> "001")
-
-                if ExistBlock("AttQtdZS4")
-                    ExecBlock("AttQtdZS4", .F., .F., {ZS4->ZS4_CODINS, 5})
-                endif
-
-                RecLock("ZS4", .F.)
-                ZS4->(DbDelete())
-                ZS4->(MsUnlock())
-          endif
-
+    While !ZS4->(EOF())
+        If oMark:IsMark()
+            nCount++
+        Endif
         ZS4->(DbSkip())
-      End Do
+    End Do
+
+    ZS4->(DbGoTop())
+    While !ZS4->(EoF())
+        if oMark:IsMark() .and. ((ZS4->ZS4_AULA) <> "001")
+              if ExistBlock("AttQtdZS4")
+                  ExecBlock("AttQtdZS4", .F., .F., {ZS4->ZS4_CODINS, 5})
+              endif
+              RecLock("ZS4", .F.)
+              ZS4->(DbDelete())
+              ZS4->(MsUnlock())
+        endif
+      ZS4->(DbSkip())
+    End Do
 
       oMark:Refresh(.T.)
   endif

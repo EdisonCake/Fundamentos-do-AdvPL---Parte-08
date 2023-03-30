@@ -74,7 +74,7 @@ User Function DelZS3()
       ZS3->(DbGoTop())
 
       While !ZS3->(EoF())
-          if oMark:IsMark() .and. ((ZS3->ZS3_QTDALU) < 1)
+          if oMark:IsMark() .and. ((ZS3->ZS3_QTDALU) == 0)
               RecLock("ZS3", .F.)
                 ZS3->(DbDelete())
               ZS3->(MsUnlock())

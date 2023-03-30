@@ -68,7 +68,7 @@ Static Function ViewDef()
     oView:CreateHorizontalBox("ALUNO", 40)
 
     oView:SetOwnerView("VIEW_ZS1", "CNH")
-    oView:EnableTitleView("VIEW_ZS1", "Categorias de CNH")
+    oView:EnableTitleView("VIEW_ZS1", "Categoria de CNH")
 
     oView:SetOwnerView("VIEW_ZS3", "INSTRUTOR")
     oView:EnableTitleView("VIEW_ZS3", "Instrutor(es) da Categoria")
