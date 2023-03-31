@@ -12,8 +12,6 @@ User Function ZF1MVC()
     local cTitle    := 'To-Do! List'
     local oBrowse   := FwmBrowse():New()
 
-    private cTarefa := ""
-
     oBrowse:SetAlias(cAlias)
     oBrowse:SetDescription(cTitle)
     
@@ -23,9 +21,9 @@ User Function ZF1MVC()
     oBrowse:AddLegend('ZF1_COMPLE == .T.', 'GREEN',   'Tarefa concluída',     '1')
     oBrowse:AddLegend('ZF1_COMPLE == .F.', 'RED',     'Tarefa não concluída', '1')
 
-    oBrowse:AddLegend('ZF1_TIPO == "001"', 'PINK',      'Tarefa do tipo "Pessoal"',     '2')
-    oBrowse:AddLegend('ZF1_TIPO == "002"', 'ORANGE',    'Tarefa do tipo "Trabalho"',    '2')
-    oBrowse:AddLegend('ZF1_TIPO == "003"', 'BLUE',      'Tarefa do tipo "Estudos"',     '2')
+    oBrowse:AddLegend('ZF1_TIPO == "001"', 'PINK',    'Tarefa do tipo "Pessoal"',     '2')
+    oBrowse:AddLegend('ZF1_TIPO == "002"', 'ORANGE',  'Tarefa do tipo "Trabalho"',    '2')
+    oBrowse:AddLegend('ZF1_TIPO == "003"', 'BLUE',    'Tarefa do tipo "Estudos"',     '2')
 
     oBrowse:Activate()
 Return 
@@ -115,24 +113,25 @@ Static Function Conclui(oGrid)
     local lMark
 
     For nCount := 1 to oGrid:Length()
-        
         oGrid:GoLine(nCount)
         lMark := oGrid:GetValue("ZF2_MARK")
+
         if !oGrid:IsDeleted() .and. lMark
             nMark++
-        elseif oGrid:IsDeleted()
-            nLinhas--
         endif
     Next
 
     If nMark == nLinhas
-
         If DbSeek(xFilial("ZF1")+cTarefa)
-
             ZF1->(RECLOCK("ZF1", .F.))
                 ZF1->ZF1_COMPLE := .T.
             ZF1->(MSUNLOCK())
-
+        Endif
+    Else
+        If DbSeek(xFilial("ZF1")+cTarefa)
+            ZF1->(RECLOCK("ZF1", .F.))
+                ZF1->ZF1_COMPLE := .F.
+            ZF1->(MSUNLOCK())
         Endif
 
     Endif
